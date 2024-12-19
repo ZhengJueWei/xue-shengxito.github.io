@@ -1,1 +1,188 @@
-this is    xue-shengxito!!111
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+  <div class="windon" style="width: 80%;margin: 0 auto;">
+    <div class="ProjectBox" style="width: 100%;">
+      <h1>学生管理系统</h1>
+      <div class="SearchBox"
+        style=" width: 50%;height: 35px;overflow: hidden;border: 1px solid black;display: flex;justify-content: space-between;">
+        <input class="SearchInput" type="text" style="width: 80%;height: 35px;outline:none;border: 0px; padding-left:10px; "
+          placeholder="输入查询内容">
+        <button class="seek" style="width: 10%;height: 35px; color:white;background-color: aqua; border: 0px; margin-left: 20px; border-left: 1px solid black !important;;">查询</button>
+      </div>
+  <div class="pop"
+    style="display: none; width: 20%;height: 350px;background-color:rgba(0, 0, 0, 0.384);position: fixed;top: 0px;left: 50%;transform:translateX(-50%);">
+    <form action="#">
+      <p>
+        <label for="">姓名：</label>
+        <input type="text" id="nameInput" style="width: 80%;height: 25px;outline:none;">
+      </p>
+      <p>
+        <label for="">性别：</label>
+        <input type="text" id="genderInput" style="width: 80%;height: 25px;outline:none;">
+      </p>
+      <p>
+        <label for="">年龄：</label>
+        <input type="text" id="ageInput" style="width: 80%;height: 25px;outline:none;">
+      </p>
+      <p>
+        <label for="">班级：</label>
+        <input type="text" id="classInput" style="width: 80%;height: 25px;outline:none;">
+      </p>
+      <p>
+        <label for="">专业：</label>
+        <input type="text" id="majorInput" style="width: 80%;height: 25px;outline:none;">
+      </p>
+      <p>
+        <label for="">学院：</label>
+        <input type="text" id="collegeInput" style="width: 80%;height: 25px;outline:none;">
+      </p>
+      <button class="yes"
+        style="padding: 5px 5px ; color: white;background-color: blue;border: 1px solid blue;float: right; margin-left: 20px;margin-right:20px;">确认</button>
+      <button class="no" style="padding: 5px 5px ; border: 1px solid black;float: right;">取消</button>
+    </form>
+  </div>
+  <table id="studentTable" style="border-collapse: collapse;width: 100%;text-align: center;margin-top: 20px;">
+    <thead>
+      <tr>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">学号</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">姓名</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">性别</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">年龄</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">班级</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">专业</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">学院</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">修改</th>
+        <th style="border: 1px solid black;background-color: rgba(95, 158, 160, 0.113);">删除</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+    </div>
+  </div>
+    <!-- 修改弹窗-->
+ 
+</body>
+<script>
+   /**
+    * 因为idea企业版本中无法使用vue插件，所以这边功能使用js来完成
+    * 第一模块：渲染模块，
+    * 第二模块：删除模块，
+    * 第三模块：修改模块，
+    * 第四模块：查询模块
+   */
+  const studentsList = [
+      { id: 1, name: '钟馗', gender: "男", age: 20, class: "软件2班", major: '软件技术', college: '理工学院' },
+      { id: 2, name: '张姆斯', gender: "男", age: 20, class: "软件2班", major: '软件技术', college: '理工学院' },
+      { id: 3, name: '黑皮', gender: "男", age: 20, class: "软件2班", major: '软件技术', college: '理工学院' },
+    ]
+
+  // 第一模块：渲染模块，
+  function renderTable() {
+    const tbody = document.querySelector('#studentTable tbody');
+    tbody.innerHTML = '';
+   tbody.innerHTML= studentsList.map((student, index) => {
+      return`
+        <tr>
+          <td style="border: 1px solid black;height: 50px;">${index+1}</td>
+          <td style="border: 1px solid black;height: 50px;">${student.name}</td>
+          <td style="border: 1px solid black;height: 50px;">${student.gender}</td>
+          <td style="border: 1px solid black;height: 50px;">${student.age}</td>
+          <td style="border: 1px solid black;height: 50px;">${student.class}</td>
+          <td style="border: 1px solid black;height: 50px;">${student.major}</td>
+          <td style="border: 1px solid black;height: 50px;">${student.college}</td>
+          <td style="border: 1px solid black;height: 50px;"><button class="modify" style="background-color: red;color: white;border: 1px solid red;padding: 5px 5px;">修改</button></td>
+          <td style="border: 1px solid black;height: 50px;"><a href="#" style="color: red;" data-id=${index}>删除</a></td>
+        </tr>`;
+    }).join('');
+  }
+
+  // 初始化页面时渲染表格
+  window.onload = function () {
+    renderTable();
+  };
+
+  // 修改模块代码
+  const table = document.querySelector('#studentTable');
+  const pop = document.querySelector('.pop');
+  const yesButton = document.querySelector('.yes');
+  const noButton = document.querySelector('.no');
+
+  table.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modify')) {
+      const rowIndex = e.target.closest('tr').rowIndex - 1; // 获取点击修改按钮所在行的索引（减去表头行）
+      const student = studentsList[rowIndex];
+      // 将学生当前信息填充到弹出框的输入框中
+      document.getElementById('nameInput').value = student.name;
+      document.getElementById('genderInput').value = student.gender;
+      document.getElementById('ageInput').value = student.age;
+      document.getElementById('classInput').value = student.class;
+      document.getElementById('majorInput').value = student.major;
+      document.getElementById('collegeInput').value = student.college;
+      pop.style.display = 'block';
+
+      yesButton.addEventListener('click', () => {
+        // 获取弹出框中用户输入的新信息
+        const newName = document.getElementById('nameInput').value;
+        const newGender = document.getElementById('genderInput').value;
+        const newAge = document.getElementById('ageInput').value;
+        const newClass = document.getElementById('classInput').value;
+        const newMajor = document.getElementById('majorInput').value;
+        const newCollege = document.getElementById('collegeInput').value;
+
+        // 更新学生对象的相应属性
+        student.name = newName;
+        student.gender = newGender;
+        student.age = newAge;
+        student.class = newClass;
+        student.major = newMajor;
+        student.college = newCollege;
+
+        // 重新渲染表格以显示修改后的信息
+        renderTable();
+        pop.style.display = 'none';
+      });
+    }
+  });
+
+  noButton.addEventListener('click', () => {
+    pop.style.display = 'none';
+  });
+
+   //第二模块：删除模块，
+  const tbody = document.querySelector('tbody')
+  tbody.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      studentsList.splice(e.target.dataset.id, 1)
+      renderTable()
+    }
+  })
+  //查询模块
+  const seek = document.querySelector('.seek')
+  const input = document.querySelector('.SearchInput')
+  seek.addEventListener('click', () => {
+    const inputValue = input.value.trim();
+    if (inputValue !== "") {
+      const resultList = studentsList.filter(item => item.name.includes(inputValue));
+      if (resultList.length > 0) {
+        resultList.forEach(item => {
+          alert(`
+          id:${item.id},
+          姓名:${item.name},
+          性别:${item.gender},
+          年龄:${item.age},
+          班级:${item.classes},
+          学院:${item.college}
+        `);
+        });
+      } else {
+        alert('未找到匹配的学生信息，请重新输入');
+      }
+      input.value = '';
+    }
+  });
+</script>
+
+</html>
